@@ -139,5 +139,6 @@ cython_debug/
 .vscode
 datasets/*
 
+cluster/
 submodules/
 submodules/*.patch
