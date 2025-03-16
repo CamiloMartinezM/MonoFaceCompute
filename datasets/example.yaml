@@ -1,5 +1,5 @@
-base_dir: /home/camilo/Repositorios/eeg-3d-face/data/processed/face_recordings/
-output_dir: /home/camilo/Repositorios/eeg-3d-face/data/interim/
+base_dir: /CT/eeg-3d-face/nobackup/eeg-3d-face/data/processed/face_recordings
+output_dir: /CT/eeg-3d-face/nobackup/eeg-3d-face/data/interim/face_recordings
 tracker: EMOCA
 shape_tracker: SMIRK
 crop_mode: constant
@@ -8,8 +8,8 @@ resize: 512
 sequences:
     1:
         source: 2/bite_lower_lip/bite_lower_lip.mp4 # relative to base_dir
-    # 2:
-    #     source: 3/DSC-RX0M2_3787085_C0003.MP4
+    2:
+        source: 2/bite_tongue/bite_tongue.mp4
 
 shape_sequence: 1
 steps: ["extract", "crop", "matte", "segment", "landmarks", "track", "optimize", "visualize"]

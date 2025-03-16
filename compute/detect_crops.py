@@ -2,6 +2,12 @@ import argparse
 from pathlib import Path
 from tqdm import tqdm
 
+import os
+
+# Set the environment variable to enable CUDA error checking
+os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
+os.environ["PYTORCH_CUDA_ALLOC_CONF"]="expandable_segments:True"
+
 import torch
 from torch.utils.data import DataLoader, Subset
 import cv2
@@ -27,7 +33,7 @@ CROP_MODE_CONSTANT_Q = 0.05 # quantile for mode=constant
 CONFIDENCE_THRESHOLD = 0.6 # min threshold for resolving multiple detections on the same frame
 
 @torch.no_grad()
-def detect_faces(dataloader, face_selection_strategy):
+def detect_faces(dataloader, face_selection_strategy, device):
     raw_boxes = []
     num_detections_stats = dict()
     image_idx = 0
@@ -36,6 +42,9 @@ def detect_faces(dataloader, face_selection_strategy):
 
     for batch in tqdm(dataloader):
         imgs = batch["image"]
+
+        # Pass imgs to GPU
+        imgs = imgs.to(device=device)
 
         # Face detection
         boxes_batch = fa.face_detector.detect_from_batch(imgs.permute(0,3,1,2)) # BHWC to BCHW
@@ -152,6 +161,27 @@ if __name__ == "__main__":
     else:
         debug_dir = None
 
+    # Empty the CUDA cache 
+    torch.cuda.empty_cache()
+
+    # Check if CUDA is available
+    print(f"Torch is available: {torch.cuda.is_available()}")
+
+    # Print list of CUDA devices
+    print(f"CUDA devices: {torch.cuda.device_count()}")
+    for i in range(torch.cuda.device_count()):
+        print(f"Device {i}: {torch.cuda.get_device_name(i)}")
+
+    # Set the current CUDA device
+    torch.cuda.set_device(0)
+
+    # Get the current CUDA device
+    device = torch.cuda.current_device()
+    print(f"Current CUDA device: {torch.cuda.get_device_name(device)}")
+
+    # Print current CUDA device
+    print(f"Current CUDA device: {torch.cuda.current_device()}")
+
     fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D)
     
     dataset = TestDataCustom(args.input)
@@ -171,7 +201,7 @@ if __name__ == "__main__":
         raw_boxes = [torch.tensor([center_x-s/2, center_y-s/2, center_x+s/2, center_y+s/2], dtype=torch.float) for _ in range(dataset_size)]
     else:
         print("Running initial bbox detection")
-        raw_boxes, valid_ids = detect_faces(dataloader, args.face_selection_strategy)
+        raw_boxes, valid_ids = detect_faces(dataloader, args.face_selection_strategy, device)
 
     if mode == "fixed":
         pass
