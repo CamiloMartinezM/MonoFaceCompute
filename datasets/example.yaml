@@ -1,9 +1,10 @@
-base_dir: /CT/eeg-3d-face/nobackup/eeg-3d-face/data/processed/face_recordings
-output_dir: /CT/eeg-3d-face/nobackup/eeg-3d-face/data/interim/face_recordings
+base_dir: /CT/eeg-3d-face/work/eeg-3d-face/data/processed/face_recordings
+output_dir: /CT/eeg-3d-face/work/eeg-3d-face/data/interim/face_recordings
 tracker: EMOCA
 shape_tracker: SMIRK
 crop_mode: constant
-crop_scale: 1.4
+# crop_scale: 1.4
+crop_scale: 2.0
 resize: 512
 sequences:
     1:

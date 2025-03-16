@@ -19,9 +19,15 @@ Pull requests for other computations are welcome!
 ## Setup
 
 1. Pull the submodules: `./pull_submodules.sh`
-2. Run the setup script: `./setup.sh` to build a conda environment with all required dependencies.
-3. Download pretrained models and other required files: `./download_all_assets.sh`
-4. Configure your dataset according to the examples in [datasets](./datasets).
+    * The following might be needed in [submodules/INFERNO/inferno/utils/DecaUtils.py](submodules/INFERNO/inferno/utils/DecaUtils.py) after the imports:
+```
+np.int = np.int64
+np.float = np.float64
+np.bool = np.bool_
+```
+1. Run the setup script: `./setup.sh` to build a conda environment with all required dependencies.
+2. Download pretrained models and other required files: `./download_all_assets.sh`
+3. Configure your dataset according to the examples in [datasets](./datasets).
 
 One dataset consists of one or multiple monocular videos. Several parameters can be tweaked, such as the strategy for cropping the videos, what face tracker to use, what dimensions the crops should be resized to or what steps of the preprocessing pipeline to run.
 
