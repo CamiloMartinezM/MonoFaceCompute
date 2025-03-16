@@ -142,3 +142,6 @@ datasets/*
 cluster/
 submodules/
 submodules/*.patch
+
+# Exclude symlinked folders
+data-eeg-3d-face
