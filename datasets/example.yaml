@@ -1,5 +1,5 @@
-base_dir: /CT/eeg-3d-face/work/eeg-3d-face/data/processed/face_recordings
-output_dir: /CT/eeg-3d-face/work/eeg-3d-face/data/interim/face_recordings
+base_dir: bulk/data/processed/face_recordings
+output_dir: bulk/data/interim/face_recordings/MonoFaceCompute
 tracker: EMOCA
 shape_tracker: SMIRK
 crop_mode: constant
